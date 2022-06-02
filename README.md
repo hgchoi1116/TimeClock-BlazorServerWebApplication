@@ -14,33 +14,33 @@
 - The admin (client) will have additional access to Admin-Employee, Admin-Timesheet, and Admin-Export/Delete.
 
 <b>Time Clock Homepage</b><br>
-![Time Clock Homepage](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/TimeClock.png?raw=true)<br>
+![Time Clock Homepage](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/TimeClock.png?raw=true)<br>
 Employees will clock in and clock out by entering four digit unique employee ID created by the admin. Today's Status will provide live update of today's activity.
 
 <b>Employee-Timesheet Page</b><br>
-![Employee-Timesheet Page](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/Employee-Timesheet.png?raw=true)<br>
+![Employee-Timesheet Page](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/Admin-Timesheet.png?raw=true)<br>
 Employees can check their worked hours by typing their employee ID and selecting date range.<br>At the bottom, the program will auto-calculate total hours worked based on the date range.<br>
 
 <b>Login Page</b><br>
-![Login Page](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/Login.png?raw=true)<br>
+![Login Page](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/Login.png?raw=true)<br>
 Admin can gain access by logging in. Admin can reset the password (used SendGrid to send emails) if needed. One account was preset to the client.
 
 <b>Admin-Employee Page</b>
-![Admin-Employee](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/Admin-Employee.png?raw=true)<br>
+![Admin-Employee](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/Admin-Employee.png?raw=true)<br>
 Admin can view registered employees. For the employees to use this application, they must be registered on the Admin-Employee page. The pencil icon will allow the admin to edit or delete the selected employee.
 
 <b>CRUD Employee</b>
-![CRUD Employee](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/CRUDEmployee.png?raw=true)<br>
+![CRUD Employee](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/CRUDEmployee.png?raw=true)<br>
 Admin can add/edit/delete employees.
 
 <b>Admin-Timesheet Page</b>
-![Admin-Timesheet](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/Admin-Timesheet.png?raw=true)<br>
+![Admin-Timesheet](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/Admin-Timesheet.png?raw=true)<br>
 Admin can filter employeee ID and date to browse through all the time clock records. The pencil icon will allow the admin to edit or delete the selected record.
 
 <b>CRUD Record</b><br>
-![CRUD Record](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/CRUDRecord.png?raw=true)<br>
+![CRUD Record](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/CRUDRecord.png?raw=true)<br>
 Admin can add/edit/delete records.
 
 <b>Admin-Export/Delete Page</b>
-![Admin-ExportDelete](https://github.com/hgchoi1116/BlazorServerWebApplication/blob/main/Images/Admin-ExportDelete.png?raw=true)<br>
+![Admin-ExportDelete](https://github.com/hgchoi1116/TimeClock-BlazorServerWebApplication/blob/master/Images/Admin-ExportDelete.png?raw=true)<br>
 Admin specify the date range and download the record database in .csv file to keep a backup or to open the database in MS Excel. Also, the admin can delete the records to keep the database clean.
