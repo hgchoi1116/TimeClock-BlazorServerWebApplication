@@ -1,4 +1,5 @@
-﻿namespace ClockInClockOut.Services
+﻿// Description: email function for resetting the password
+namespace ClockInClockOut.Services
 {
     public class AuthMessageSenderOptions
     {

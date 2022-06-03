@@ -1,4 +1,9 @@
-﻿@page "/CRUDEmployee"
+﻿<!--
+Description: allows admin to perform "Create" "Read" "Update" and "Delete" functionalities to Employee
+
+-->
+
+@page "/CRUDEmployee"
 @page "/CRUDEmployee/{IdNumber:int}"
 @attribute [Authorize]
 @inject IEmployeeServices EmployeeService
@@ -99,24 +104,27 @@ else
     bool RangeID = false;
     async Task HandleSubmit()
     {
+        if (employee.IdNumber == null)
+        {
             if (employee.IdNumber < 1000 || employee.IdNumber > 9999)
             {
                 await jsRuntime.InvokeVoidAsync("alert", "The Employee ID must have four digit number. Please enter a value between 1000 and 9999.");
                 RangeID = true;
             }
-        foreach (var employee2 in EmployeeService.Employees)
-        {
-
-            if (employee2.IdNumber == employee.IdNumber)
+            foreach (var employee2 in EmployeeService.Employees)
             {
-                //employee id duplicate
-                await jsRuntime.InvokeVoidAsync("alert", "The Employee ID you enterd was already in the system. Please enter a new unique ID.");
-                DupID = true;
+
+                if (employee2.IdNumber == employee.IdNumber)
+                {
+                    //employee id duplicate
+                    await jsRuntime.InvokeVoidAsync("alert", "The Employee ID you enterd was already in the system. Please enter a new unique ID.");
+                    DupID = true;
+                }
+
             }
 
-
         }
-        if (DupID == false && RangeID == false )
+        if (DupID == false && RangeID == false)
         {
 
             if (idNumber == null)

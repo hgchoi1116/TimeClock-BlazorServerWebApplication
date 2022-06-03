@@ -1,3 +1,8 @@
+<!--
+Description: main page of the web application.
+-Allows employees to clock in/out by entering unique 4 digit ID and pressing "clock in/out" button
+-Today's Status allows the user to confirm their clock in/out status
+-->
 @page "/"
 @inject IEmployeeServices EmployeeService
 @inject IRecordServices RecordServices
@@ -51,7 +56,7 @@
             text-align: center;
             border-radius: 25px;
             display: inline-block;
-            font-size: 16px; /* Font size of date */
+            font-size: 25px; /* Font size of date */
             position: relative;
             transition-duration: 0.3s;
             cursor: pointer;
@@ -87,12 +92,8 @@
 
 <div class="header">
     <img src="https://afcsushi.com/wp-content/uploads/2017/03/about_logo.png" alt="logo" />       <!--- Importing AFC Logo -->
-    <h1> <b> Time Clock </b></h1>
 </div>
-
 <br>
-<br>
-
 <table style="width:100%">
     <td>
         <EditForm Model="employee" OnSubmit="HandleSubmit">
@@ -101,164 +102,165 @@
 
                 <InputNumber id="IdNumber" @bind-Value="employee.IdNumber" class="input" placeholder="4 Digit Code"></InputNumber>
             </div>
-            <br><br>
+            <br>
             <button type="submit" class="button3"><b>Clock In/Clock Out</b></button>
         </EditForm>
     </td>
-    <td>
-        <p>
-            <strong> Instruction</strong><hr>
-            1. Type your four digit employee ID<br>
-            2. Press "Clock In/ Clock Out" button.<br>
-            If you forgot to clock in/out, contact the store manager for time adjustment.
-        </p>
-        <hr>
-        <p>**Confirm your clock in/out status below at "Today's Status"**</p>
-    </td>
 
-</table>
-<br>
-<br>
-<br>
+    <!--
+        <td>
+            <p>
+                <strong> Instruction</strong><hr>
+                1. Type your four digit employee ID<br>
+                2. Press "Clock In/ Clock Out" button.<br>
+                If you forgot to clock in/out, contact the store manager for time adjustment.
+            </p>
+            <hr>
+            <p>**Confirm your clock in/out status below at "Today's Status"**</p>
+        </td>
+        -->
 
-<div class="subheader"><h1><b>Today's Status</b></h1></div> <!-- shows today's clock in/out record-->
+    </table>
+    <br>
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Clock In</th>
-            <th>Clock Out</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var record in RecordServices.Records)
-        {
+    <div class="subheader"><h1><b>Today's Status</b></h1></div> <!-- shows today's clock in/out record-->
+
+    <table class="table">
+        <thead>
             <tr>
-                @if (record.ClockInTime.Date == DateTime.Now.Date)
-                {
-                    <td>@record.EmployeeName</td>
-                    <td>
-                        @record.ClockInTime
-                    </td>
-                    <td>
-                        @if (record.ClockOutTime != DateTime.MinValue)
-                        {
-                            @record.ClockOutTime
-                        }
-                    </td>
-
-                }
+                <th>Name</th>
+                <th>Clock In</th>
+                <th>Clock Out</th>
             </tr>
-        }
-    </tbody>
-</table>
-
-
-@code {
-    Employee employee = new Employee();
-    Record record = new Record();
-
-    bool IdFound = false;
-    async Task HandleSubmit()
-    {
-        foreach (var employee2 in EmployeeService.Employees)
-        {
-            if (employee2.IdNumber == employee.IdNumber) //verify user's input is a valid input in the database
+        </thead>
+        <tbody>
+            @foreach (var record in RecordServices.Records)
             {
-                await ClockInRecord(employee.IdNumber);
-                IdFound = true;
+                <tr>
+                    @if (record.ClockInTime.Date == DateTime.Now.Date)
+                    {
+                        <td>@record.EmployeeName</td>
+                        <td>
+                            @record.ClockInTime
+                        </td>
+                        <td>
+                            @if (record.ClockOutTime != DateTime.MinValue)
+                            {
+                                @record.ClockOutTime
+                            }
+                        </td>
+
+                    }
+                </tr>
             }
-        }
-        if (IdFound == false) // if user input was not found in the database, show pop up errors
+        </tbody>
+    </table>
+
+
+    @code {
+        Employee employee = new Employee();
+        Record record = new Record();
+
+        bool IdFound = false;
+        async Task HandleSubmit()
         {
-            if (employee.IdNumber < 999 || employee.IdNumber > 9999)
+            foreach (var employee2 in EmployeeService.Employees)
             {
-                await jsRuntime.InvokeVoidAsync("alert", "Please enter 4 digit Code");
+                if (employee2.IdNumber == employee.IdNumber) //verify user's input is a valid input in the database
+                {
+                    await ClockInRecord(employee.IdNumber);
+                    IdFound = true;
+                }
             }
-            else
+            if (IdFound == false) // if user input was not found in the database, show pop up errors
             {
-                await jsRuntime.InvokeVoidAsync("alert", "Invalid Employee ID. Double check your entry.");
+                if (employee.IdNumber < 999 || employee.IdNumber > 9999)
+                {
+                    await jsRuntime.InvokeVoidAsync("alert", "Please enter 4 digit Code");
+                }
+                else
+                {
+                    await jsRuntime.InvokeVoidAsync("alert", "Invalid Employee ID. Double check your entry.");
+                }
             }
+
+            // reset all the values for next handlesubmit
+            this.record = new Record();
+            this.employee = new Employee();
+            this.employee.IdNumber = 0;
+            IdFound = false;
         }
 
-        // reset all the values for next handlesubmit
-        this.record = new Record();
-        this.employee = new Employee();
-        this.employee.IdNumber = 0;
-        IdFound = false;
-    }
-
-    // load employees when the program starts
-    protected override async Task OnInitializedAsync()
-    {
-        await EmployeeService.LoadEmployees();
-        await RecordServices.LoadRecord();
-
-    }
-
-    async Task ClockInRecord(int idNumber)
-    {
-        var employee = await EmployeeService.GetEmployee((int)idNumber);
-        if (employee.IsClockedIN == false) // perform clock in
+        // load employees when the program starts
+        protected override async Task OnInitializedAsync()
         {
-            record.IdNumber = employee.IdNumber;
-            record.EmployeeName = employee.FirstName + " " + employee.LastName;
-            record.ClockInTime = DateTime.Now;
-
-            employee.IsClockedIN = true;
-
-            await RecordServices.CreateRecord2(record);
-            await EmployeeService.UpdateEmployee2(employee, employee.IdNumber);
+            await EmployeeService.LoadEmployees();
             await RecordServices.LoadRecord();
+
         }
-        else if (employee.IsClockedIN == true) // perform clock out
+
+        async Task ClockInRecord(int idNumber)
         {
-            await RecordServices.LoadRecord();
-            await ClockOUTRecord(employee);
-        }
-    }
-
-    async Task ClockOUTRecord(Employee employee)
-    {
-
-        // intialized boolen for alert if statment
-        bool NotClocked = true;
-
-        foreach (var record in RecordServices.Records)
-        {
-            if (record.ClockInTime.Date == DateTime.Today.Date && record.IdNumber == employee.IdNumber && record.ClockOutTime == DateTime.MinValue)
+            var employee = await EmployeeService.GetEmployee((int)idNumber);
+            if (employee.IsClockedIN == false) // perform clock in
             {
-                int RecordID = employee.IdNumber;
-                var record1 = await RecordServices.GetRecord((int)record.ItemNumber);
+                record.IdNumber = employee.IdNumber;
+                record.EmployeeName = employee.FirstName + " " + employee.LastName;
+                record.ClockInTime = DateTime.Now;
 
-                record1.ClockOutTime = DateTime.Now;
-                int ItemNum = record1.ItemNumber;
+                employee.IsClockedIN = true;
 
-                TimeSpan diff = record1.ClockOutTime - record1.ClockInTime;
-                double hours = diff.TotalHours;
-                record.TotalHoursWorked = hours;
+                await RecordServices.CreateRecord2(record);
+                await EmployeeService.UpdateEmployee2(employee, employee.IdNumber);
+                await RecordServices.LoadRecord();
+            }
+            else if (employee.IsClockedIN == true) // perform clock out
+            {
+                await RecordServices.LoadRecord();
+                await ClockOUTRecord(employee);
+            }
+        }
+
+        async Task ClockOUTRecord(Employee employee)
+        {
+
+            // intialized boolen for alert if statment
+            bool NotClocked = true;
+
+            foreach (var record in RecordServices.Records)
+            {
+                if (record.ClockInTime.Date == DateTime.Today.Date && record.IdNumber == employee.IdNumber && record.ClockOutTime == DateTime.MinValue)
+                {
+                    int RecordID = employee.IdNumber;
+                    var record1 = await RecordServices.GetRecord((int)record.ItemNumber);
+
+                    record1.ClockOutTime = DateTime.Now;
+                    int ItemNum = record1.ItemNumber;
+
+                    TimeSpan diff = record1.ClockOutTime - record1.ClockInTime;
+                    double hours = diff.TotalHours;
+                    record.TotalHoursWorked = hours;
+                    employee.IsClockedIN = false;
+
+                    await EmployeeService.UpdateEmployee2(employee, employee.IdNumber);
+                    await RecordServices.UpdateRecord2(record1, ItemNum);
+                    NotClocked = false;
+                }
+
+                else
+                {
+                    //do nothing
+                }
+            }
+            //If employee forgets to clock out sets their status back to false and gives them alert
+            if (NotClocked == true)
+            {
+
                 employee.IsClockedIN = false;
 
-                await EmployeeService.UpdateEmployee2(employee, employee.IdNumber);
-                await RecordServices.UpdateRecord2(record1, ItemNum);
-                NotClocked = false;
+                //alerts the employee they have a record where they did not clock out
+                await jsRuntime.InvokeVoidAsync("alert", "You have not clocked out from your last shift. \n\nPlease clock in again, and contact your manager to fix your previous shifts clock out time.");
             }
-
-            else
-            {
-                //do nothing
-            }
+            await EmployeeService.UpdateEmployee2(employee, employee.IdNumber);
         }
-        //If employee forgets to clock out sets their status back to false and gives them alert
-        if (NotClocked == true)
-        {
-
-            employee.IsClockedIN = false;
-
-            //alerts the employee they have a record where they did not clock out
-            await jsRuntime.InvokeVoidAsync("alert", "You have not clocked out from your last shift. \n\nPlease clock in again, and contact your manager to fix your previous shifts clock out time.");
-        }
-        await EmployeeService.UpdateEmployee2(employee, employee.IdNumber);
     }
-}

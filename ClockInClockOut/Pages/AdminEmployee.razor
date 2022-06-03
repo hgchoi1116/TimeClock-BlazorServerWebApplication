@@ -1,4 +1,8 @@
-﻿@page "/AdminEmployee"
+﻿<!--
+Description: the page shows list of employees registered in the database.
+**Employee must be added first in order for the employee to clock in/out
+-->
+@page "/AdminEmployee"
 @attribute [Authorize]
 @inject IEmployeeServices EmployeeService
 @inject NavigationManager NavigationManager

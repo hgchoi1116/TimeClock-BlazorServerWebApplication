@@ -1,4 +1,6 @@
-﻿using ClockInClockOut.Services;
+﻿// Description: email function for resetting the password
+
+using ClockInClockOut.Services;
 using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.Extensions.Options;
 using SendGrid;

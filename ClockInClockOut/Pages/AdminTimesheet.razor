@@ -1,4 +1,9 @@
-﻿@page "/AdminTimesheet"
+﻿<!--
+Description: Admin to look at all the clock in/out records.
+Admin can specify the date and employee ID to filter the result.
+When Employee ID is entered, total hours will be displayed
+-->
+@page "/AdminTimesheet"
 @attribute [Authorize]
 @using System.Linq
 @inject IRecordServices RecordServices

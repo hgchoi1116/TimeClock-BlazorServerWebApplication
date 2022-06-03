@@ -1,4 +1,10 @@
-﻿@page "/EmployeeTimesheet"
+﻿<!--
+Description: Employees can check their work history by selecting the date range and entering unique 4 digit code.
+The table will display all the records that the user clocked in/out
+Total Hours will be calculated based on the result
+-->
+
+@page "/EmployeeTimesheet"
 @using System.Linq
 @inject IEmployeeServices EmployeeService
 @inject IRecordServices RecordServices
