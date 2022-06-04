@@ -1,5 +1,5 @@
 <h1>Time Clock Web Application</h1>
-<b>Client:</b> AFC Sushi Retail Store Owner
+<b>Client:</b> AFC Sushi Retail Store Owner<br>
 <b>Used:</b>Blazor, C#, HTML, CSS, JavaScript
 
 <b>Purpose:</b> To provide a business tool to manage employee's time clock.
